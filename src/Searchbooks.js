@@ -2,19 +2,19 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import * as BooksAPI from './BooksAPI'
 import Book from './Book'
+import { Link } from 'react-router-dom'
 
 class Searchbooks extends Component {
 
     static propTypes = {
         // set the propTypes for the Props
-        results: PropTypes.array.isRequired,
+        // results: PropTypes.array.isRequired,
         searchBooks: PropTypes.func.isRequired,
         update: PropTypes.func.isRequired,
     }
 
     state = {
-        query:'',
-        results:[{id:'1', title:'harry potter', author:'J.K Rowing', url:'http://books.google.com/books/content?id=PGR2AwAAQBAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE73-GnPVEyb7MOCxDzOYF1PTQRuf6nCss9LMNOSWBpxBrz8Pm2_mFtWMMg_Y1dx92HT7cUoQBeSWjs3oEztBVhUeDFQX6-tWlWz1-feexS0mlJPjotcwFqAg6hBYDXuK_bkyHD-y&source=gbs_api'}],
+        query:''
     }
    
     updateQuery = (query) => {
@@ -36,12 +36,12 @@ class Searchbooks extends Component {
 
     render() {
         const { query } = this.state
-        const { results, toggle , searchBooks, update} = this.props
+        const { results, searchBooks, update} = this.props
        
         return (
             <div className="search-books">
             <div className="search-books-bar">
-                <button className="close-search" onClick={toggle}>Close</button>
+               <Link className='close-search' to='/'>Close</Link>
                 <div className="search-books-input-wrapper">
                     <input 
                         type="text" 

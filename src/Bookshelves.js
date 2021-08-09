@@ -8,14 +8,13 @@ import { render } from 'react-dom'
 // Bookshelves
 class Bookshelves extends Component {
     static propTypes = {
-        shelves: PropTypes.array.isRequired,
     }
     render() {
         const { shelves } = this.props
         return ( 
          <div>
          {
-             Object.keys(shelves).map((shelf)=> (
+             Object.keys(shelves).map((shelf) => (
                  <div className="bookshelf">
                  <h2 className="bookshelf-title">{shelf}</h2>   
                  <div className="bookshelf-books">
@@ -32,13 +31,12 @@ class Bookshelves extends Component {
                 </div>
              ))
          }
-          <div className="open-search">
-              // navigate to /search page
-              <button onClick={() => {}}>Add a book</button>
-          </div>
+         <Link className='open-search' to='/search'>
+            <button>Add a book</button>
+         </Link>
          </div>
          
-            
+           
         )
     }
 }

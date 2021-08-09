@@ -14,8 +14,8 @@ class BooksApp extends React.Component {
      * pages, as well as provide a good URL they can bookmark and share.
      */
     books: [],
-    results:[],
-    showSearchPage: false,
+    results:{},
+    shelves:[],
     // shelves: [{wantToRead:["sJf1vQAACAAJ"],
     //    currentlyReading:["jAUODAAAQBAJ"],
     //    read:[]}     ]  
@@ -24,25 +24,36 @@ class BooksApp extends React.Component {
  searchBooks = (query) => {
    BooksAPI.search(query).then((results) => {
      if (results !== undefined && results.length > 0) {
-     console.log("how many books do we find?" + results);
+      console.log("how many books do we find?" + results.length);
+      console.log(results);
+      const filteredList = results.map((book)=>{
+        const bookExist = this.state.books.find(existingBook => existingBook.id === book.id);
+        if (bookExist) {
+          return;
+        } else {
+          book.shelf = 'none';
+          return book;
+        }
+      })
+      console.log("=== filtered list ====");
+      console.log(filteredList);
+      // Does not work if use the filtered list
+      //  this.setState((currentState) => ({
+      //    books: currentState.books.slice(0,currentState.books.length, filteredList)
+      //  }))
+      this.setState(() => ({
+        books: results
+      }))
      } else {
       console.log("Oops, no result is found!");
      }
-     this.setState((currentState) => ({
-       books: results
-     }))
+    
    })
  };
 
- toggle = () => {
-    this.setState((prevState)=> ({
-      showSearchPage: !prevState.showSearchPage
-    }));
-  };
-
   componentDidMount() {
-    // BooksAPI.getAll().then((books) => { this.setState(()=> ({books:books}))
-    // });
+    BooksAPI.getAll().then((books) => { this.setState(()=> ({books:books}))
+    });
     console.log("inside componentDidMount");
     console.log("==> books ");
     console.log(this.state.books);
@@ -56,10 +67,10 @@ class BooksApp extends React.Component {
            console.log("updated the book");
            console.log(book);
            console.log("with shelf: " + shelf);
-           console.log("===> results");
+           console.log("=== updated shelves ===");
            console.log(results);
-            this.setState((currentState)=> ({
-                results: currentState.results.concat([results])
+            this.setState(()=> ({
+                shelves: results
             }))
           });
   };
@@ -82,10 +93,10 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
         <Route exact path='/' render={()=>(
-          <Bookshelves shelves={this.state.results} update={this.updateBook}/>
+          <Bookshelves shelves={this.state.shelves} update={this.updateBook}/>
         )}/>
         <Route path='/search' render={({ history })=>(
-          <Searchbooks results={this.state.books} toggle={this.toggle} searchBooks={this.searchBooks} update={this.updateBook}/>
+          <Searchbooks results={this.state.books} searchBooks={this.searchBooks} update={this.updateBook}/>
         )}/>
       </div>
     )
