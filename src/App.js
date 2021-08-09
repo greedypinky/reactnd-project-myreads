@@ -14,8 +14,8 @@ class BooksApp extends React.Component {
      * pages, as well as provide a good URL they can bookmark and share.
      */
     books: [],
-    results:{},
-    shelves:[],
+    results:[],
+    shelves:[{name:"wantToRead", books:[]}, {name:"currenlyReading", books:[]}, {name:"read", books:[]}]
     // shelves: [{wantToRead:["sJf1vQAACAAJ"],
     //    currentlyReading:["jAUODAAAQBAJ"],
     //    read:[]}     ]  
@@ -52,14 +52,38 @@ class BooksApp extends React.Component {
  };
 
   componentDidMount() {
-    BooksAPI.getAll().then((books) => { this.setState(()=> ({books:books}))
+    BooksAPI.getAll().then((allbooks) => { 
+      console.log("inside componentDidMount");
+      console.log("==> get all books ");
+      console.log(allbooks);
+      // categorize all books into different shelves
+      allbooks.map((book) => {
+        console.log('loop through all books');
+        console.log(book);
+          if (book.shelf === "wantToRead") {
+            console.log("this is want to read");
+            this.setState((currentState)=>{
+              shelves:currentState.shelves[0].books.concat([book]);
+            })
+          }
+          if (book.shelf === "currenlyReading") {
+            console.log("this is currentlyReading");
+            this.setState((currentState)=>{
+              shelves:currentState.shelves[1].books.concat([book]);
+            })
+          }
+          if (book.shelf === "read") {
+          this.setState((currentState)=>{
+            console.log("this is read");
+            shelves:currentState.shelves[2].books.concat([book]);
+          })
+         }
+      })
+      this.setState(()=> ({books:allbooks}))
+      console.log(this.state.shelves);
     });
-    console.log("inside componentDidMount");
-    console.log("==> books ");
-    console.log(this.state.books);
-    console.log("==> results ");
-    console.log(this.state.results);
   };
+
 
   updateBook = (book,shelf) => {
     console.log("update book with shelf:" + shelf);

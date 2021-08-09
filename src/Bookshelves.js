@@ -8,23 +8,25 @@ import { render } from 'react-dom'
 // Bookshelves
 class Bookshelves extends Component {
     static propTypes = {
+        shelves: PropTypes.array.isRequired
     }
     render() {
         const { shelves } = this.props
         return ( 
          <div>
+           <div className="list-books-title">
+              <h1>MyReads</h1>
+            </div>
          {
-             Object.keys(shelves).map((shelf) => (
+            shelves.map((shelf) => (
                  <div className="bookshelf">
-                 <h2 className="bookshelf-title">{shelf}</h2>   
+                 <h2 className="bookshelf-title">{shelf.name}</h2>   
                  <div className="bookshelf-books">
                     <ol className="book-grid">
                      { 
-                         shelves[shelf].map((id) => (
-                            BooksAPI.get(id).then((book) => (
+                        shelf.books.map((book) => (
                             <Book book={book} update={this.props.update}/>
-                            ))
-                         ))
+                        ))
                      }
                     </ol>
                 </div>
@@ -35,8 +37,6 @@ class Bookshelves extends Component {
             <button>Add a book</button>
          </Link>
          </div>
-         
-           
         )
     }
 }
