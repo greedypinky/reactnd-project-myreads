@@ -27,11 +27,10 @@ class Bookshelves extends Component {
                  <div className="bookshelf" key={shelf.key}>
                  <h2 className="bookshelf-title">{shelf.title}</h2>   
                  <div className="bookshelf-books">
-                    <ol className="book-grid">
+                    <ol className="books-grid">
                      { 
-                    
                         allbooks.map((book) => (
-                          book.shelf === shelf.title) &&  (   
+                          book.shelf === shelf.key) &&  (   
                             <Book book={book} update={this.props.update}/>
                             ) 
                         )
