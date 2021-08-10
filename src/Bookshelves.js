@@ -8,10 +8,15 @@ import { render } from 'react-dom'
 // Bookshelves
 class Bookshelves extends Component {
     static propTypes = {
-        shelves: PropTypes.array.isRequired
+        allbooks: PropTypes.array.isRequired
     }
     render() {
-        const { shelves } = this.props
+        const shelves = [
+            { title: 'Read', key: 'read' },
+            { title: 'Want To Read', key: 'wantToRead' },
+            { title: 'Currently Reading', key: 'currentlyReading' }
+         ];
+        const { allbooks } = this.props
         return ( 
          <div>
            <div className="list-books-title">
@@ -19,14 +24,16 @@ class Bookshelves extends Component {
             </div>
          {
             shelves.map((shelf) => (
-                 <div className="bookshelf">
-                 <h2 className="bookshelf-title">{shelf.name}</h2>   
+                 <div className="bookshelf" key={shelf.key}>
+                 <h2 className="bookshelf-title">{shelf.title}</h2>   
                  <div className="bookshelf-books">
                     <ol className="book-grid">
                      { 
-                        shelf.books.map((book) => (
+                        allbooks.map((book) => 
+                            (   (book.shelf === shelf.title) && 
                             <Book book={book} update={this.props.update}/>
-                        ))
+                            ) 
+                        )
                      }
                     </ol>
                 </div>

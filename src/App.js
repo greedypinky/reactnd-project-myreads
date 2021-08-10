@@ -15,11 +15,8 @@ class BooksApp extends React.Component {
      */
     books: [],
     results:[],
-    shelves:[{name:"wantToRead", books:[]}, {name:"currenlyReading", books:[]}, {name:"read", books:[]}]
-    // shelves: [{wantToRead:["sJf1vQAACAAJ"],
-    //    currentlyReading:["jAUODAAAQBAJ"],
-    //    read:[]}     ]  
  };
+
 
  searchBooks = (query) => {
    BooksAPI.search(query).then((results) => {
@@ -53,34 +50,7 @@ class BooksApp extends React.Component {
 
   componentDidMount() {
     BooksAPI.getAll().then((allbooks) => { 
-      console.log("inside componentDidMount");
-      console.log("==> get all books ");
-      console.log(allbooks);
-      // categorize all books into different shelves
-      allbooks.map((book) => {
-        console.log('loop through all books');
-        console.log(book);
-          if (book.shelf === "wantToRead") {
-            console.log("this is want to read");
-            this.setState((currentState)=>{
-              shelves:currentState.shelves[0].books.concat([book]);
-            })
-          }
-          if (book.shelf === "currenlyReading") {
-            console.log("this is currentlyReading");
-            this.setState((currentState)=>{
-              shelves:currentState.shelves[1].books.concat([book]);
-            })
-          }
-          if (book.shelf === "read") {
-          this.setState((currentState)=>{
-            console.log("this is read");
-            shelves:currentState.shelves[2].books.concat([book]);
-          })
-         }
-      })
       this.setState(()=> ({books:allbooks}))
-      console.log(this.state.shelves);
     });
   };
 
@@ -117,7 +87,7 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
         <Route exact path='/' render={()=>(
-          <Bookshelves shelves={this.state.shelves} update={this.updateBook}/>
+          <Bookshelves allbooks={this.state.books} update={this.updateBook}/>
         )}/>
         <Route path='/search' render={({ history })=>(
           <Searchbooks results={this.state.books} searchBooks={this.searchBooks} update={this.updateBook}/>
