@@ -29,8 +29,9 @@ class Bookshelves extends Component {
                  <div className="bookshelf-books">
                     <ol className="book-grid">
                      { 
-                        allbooks.map((book) => 
-                            (   (book.shelf === shelf.title) && 
+                    
+                        allbooks.map((book) => (
+                          book.shelf === shelf.title) &&  (   
                             <Book book={book} update={this.props.update}/>
                             ) 
                         )
