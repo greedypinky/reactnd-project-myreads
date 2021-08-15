@@ -2,11 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 class Book extends Component {
-    // static ProtoTypes {
-    // }
-
-    state = {
-        shelf:''
+    static ProtoTypes = {
+        books: PropTypes.array.isRequired
     }
 
     handleSelect = (e) => {
@@ -14,16 +11,13 @@ class Book extends Component {
         console.log("before setState" + this.state.shelf);
         console.log("event target value?" + e.target.value);
         const newShelf = e.target.value;
-        this.setState(() => ({
-            shelf: newShelf
-        }))
+
         console.log("after setState current shelf?" + newShelf);
         // update book's shelf using method updateBook
         this.props.update(this.props.book, e.target.value)
     }
 
     render() {
-        const { shelf } = this.state
         const { book } = this.props
         return (
             <li key={book.id}>
@@ -47,4 +41,5 @@ class Book extends Component {
         )
     }
 }
+
 export default Book

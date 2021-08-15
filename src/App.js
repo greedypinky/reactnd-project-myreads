@@ -17,30 +17,32 @@ class BooksApp extends React.Component {
     results:[],
  };
 
-
  searchBooks = (query) => {
    BooksAPI.search(query).then((results) => {
      if (results !== undefined && results.length > 0) {
       console.log("how many books do we find?" + results.length);
       console.log(results);
       const filteredList = results.map((book)=>{
-        const bookExist = this.state.books.find(existingBook => existingBook.id === book.id);
-        if (bookExist) {
-          return;
-        } else {
-          book.shelf = 'none';
-          return book;
+        console.log("go through book");
+        console.log(book);
+        if (this.state.books.length > 0) {
+          const bookExist = this.state.books.find( (existingBook) => {
+            console.log("what is existingBook?");
+            console.log(existingBook);
+            return existingBook.id === book.id 
+          });
+          if (bookExist) {
+            return;
+          } else {
+            book.shelf = 'none';
+            return book;
+          }
         }
       })
-      console.log("=== filtered list ====");
-      console.log(filteredList);
-      // Does not work if use the filtered list
-      //  this.setState((currentState) => ({
-      //    books: currentState.books.slice(0,currentState.books.length, filteredList)
-      //  }))
-      this.setState(() => ({
-        books: results
-      }))
+
+       this.setState({
+         books: filteredList
+       })
      } else {
       console.log("Oops, no result is found!");
      }
@@ -48,12 +50,17 @@ class BooksApp extends React.Component {
    })
  };
 
-  componentDidMount() {
+  getAll = () => { 
     BooksAPI.getAll().then((allbooks) => { 
+      console.log("=====Get all books======");
       this.setState(()=> ({books:allbooks}))
-    });
-  };
+     });
+  }
 
+  componentDidMount() {
+    this.getAll();
+    console.log(this.state.books);
+  };
 
   updateBook = (book,shelf) => {
     console.log("update book with shelf:" + shelf);
@@ -63,34 +70,26 @@ class BooksApp extends React.Component {
            console.log("with shelf: " + shelf);
            console.log("=== updated shelves ===");
            console.log(results);
-            this.setState(()=> ({
-                shelves: results
-            }))
+           this.getAll();
           });
   };
     
-  addBook = (books) => {
-    this.setState((currentState) => ({
-      books:currentState.books.concat([books])
-    }))
-  }
-
-  /*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-  */
   render() {
     return (
       <div className="app">
         <Route exact path='/' render={()=>(
           <Bookshelves allbooks={this.state.books} update={this.updateBook}/>
         )}/>
-        <Route path='/search' render={({ history })=>(
-          <Searchbooks results={this.state.books} searchBooks={this.searchBooks} update={this.updateBook}/>
+        {/* <Route path='/search' render={({ history })=>(
+          <Searchbooks results={this.state.results} searchBooks={this.searchBooks} update={()=> {
+            this.updateBook
+            history.push('/')
+          }}/>
+        )}/> */}
+          <Route path='/search' render={({ history })=>(
+          <Searchbooks results={this.state.results} searchBooks={this.searchBooks} update={
+            this.updateBook
+          }/>
         )}/>
       </div>
     )

@@ -5,7 +5,7 @@ import * as BooksAPI from './BooksAPI'
 import { Link } from 'react-router-dom'
 import { render } from 'react-dom'
 
-// Bookshelves
+// Bookshelves: Read, Want To Read, Currently Reading
 class Bookshelves extends Component {
     static propTypes = {
         allbooks: PropTypes.array.isRequired
@@ -47,4 +47,5 @@ class Bookshelves extends Component {
         )
     }
 }
+
 export default Bookshelves
