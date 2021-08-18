@@ -20,29 +20,24 @@ class BooksApp extends React.Component {
  searchBooks = (query) => {
    BooksAPI.search(query).then((results) => {
      if (results !== undefined && results.length > 0) {
-      console.log("how many books do we find?" + results.length);
-      console.log(results);
       const filteredList = results.map((book)=>{
-        console.log("go through book");
-        console.log(book);
-        if (this.state.books.length > 0) {
-          const bookExist = this.state.books.find( (existingBook) => {
-            console.log("what is existingBook?");
-            console.log(existingBook);
+        if (this.state.books !== undefined && this.state.books.length > 0) {
+          const bookExist = this.state.books.find((existingBook) => {
             return existingBook.id === book.id 
           });
-          if (bookExist) {
-            return;
+          if (bookExist !== undefined) {
+            return bookExist;
           } else {
             book.shelf = 'none';
             return book;
           }
         }
       })
-
-       this.setState({
-         books: filteredList
+      if (filteredList !== undefined && filteredList.length > 0) {
+      this.setState({
+         results: filteredList
        })
+      }
      } else {
       console.log("Oops, no result is found!");
      }
@@ -52,7 +47,6 @@ class BooksApp extends React.Component {
 
   getAll = () => { 
     BooksAPI.getAll().then((allbooks) => { 
-      console.log("=====Get all books======");
       this.setState(()=> ({books:allbooks}))
      });
   }
@@ -65,11 +59,6 @@ class BooksApp extends React.Component {
   updateBook = (book,shelf) => {
     console.log("update book with shelf:" + shelf);
     BooksAPI.update(book,shelf).then((results) => {
-           console.log("updated the book");
-           console.log(book);
-           console.log("with shelf: " + shelf);
-           console.log("=== updated shelves ===");
-           console.log(results);
            this.getAll();
           });
   };

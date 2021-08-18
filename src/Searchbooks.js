@@ -61,7 +61,7 @@ class Searchbooks extends Component {
                 <ol className="books-grid">
                 { results !== undefined && results.length > 0 &&
                     this.props.results.map((result) => (
-                        <Book book={result} update={this.props.update}/>
+                        <Book book={result} update={this.props.update} id={result.id}/>
                     ))
                 } 
                 </ol>

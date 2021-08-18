@@ -8,19 +8,15 @@ class Book extends Component {
 
     handleSelect = (e) => {
         e.preventDefault();
-        console.log("before setState" + this.state.shelf);
-        console.log("event target value?" + e.target.value);
         const newShelf = e.target.value;
-
-        console.log("after setState current shelf?" + newShelf);
         // update book's shelf using method updateBook
         this.props.update(this.props.book, e.target.value)
     }
 
     render() {
-        const { book } = this.props
+        const { book, id } = this.props
         return (
-            <li key={book.id}>
+            <li key={id} id={id}>
             <div className="book">
                 <div className="book-top">
                     <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
