@@ -5,19 +5,12 @@ class Book extends Component {
     static ProtoTypes = {
         books: PropTypes.array.isRequired
     }
-    
-    state = {
-        shelf:""
-    }
 
     handleSelect = (e) => {
         e.preventDefault();
         const newShelf = e.target.value;
         // update book's shelf using method updateBook
         this.props.update(this.props.book, e.target.value)
-        this.setState({
-            shelf:newShelf
-        })
     }
 
     render() {
@@ -31,7 +24,7 @@ class Book extends Component {
                     </div>
                     )}
                     <div className="book-shelf-changer">
-                        <select value={this.state.shelf} onChange={this.handleSelect}>
+                        <select value={book.shelf} onChange={this.handleSelect}>
                             <option value="move" disabled>Move to...</option>
                             <option value="wantToRead">Want to Read</option>
                             <option value="read">Read</option>
