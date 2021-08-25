@@ -26,11 +26,11 @@ class Searchbooks extends Component {
     updateQuery = (query) => {
        
         // search the api by the latest
-        if (query.length > 0 && query !== undefined) {
+        //if (query.length > 0 && query !== undefined) {
             console.log("we search!")
             console.log("what is the query?" + query)
             this.props.searchBooks(query)
-        }
+        //}
         this.setState(()=> ({
             query:query
          }))

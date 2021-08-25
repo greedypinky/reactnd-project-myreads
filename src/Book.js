@@ -33,8 +33,12 @@ class Book extends Component {
                         </select>
                     </div>
                 </div>
+                {book.title !== undefined &&  (
                 <div className="book-title">{book.title}</div>
+                )}
+                {book.authors !== undefined && (
                 <div className="book-authors">{book.authors}</div>
+                )}
             </div>
             </li>
         )

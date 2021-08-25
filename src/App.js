@@ -18,6 +18,9 @@ class BooksApp extends React.Component {
  };
 
  searchBooks = (query) => {
+  if (query !== undefined && query.length === 0) {
+    this.resetSearch();
+  } else {
    BooksAPI.search(query).then((results) => {
      if (results !== undefined && results.length > 0) {
       const filteredList = results.map((book)=>{
@@ -43,6 +46,7 @@ class BooksApp extends React.Component {
      }
     
    })
+  }
  };
 
   getAll = () => { 
@@ -71,6 +75,11 @@ class BooksApp extends React.Component {
           });
   };
 
+  resetSearch = () => {
+    this.setState( {
+      results:[]
+    })
+  }
     
   render() {
     return (
