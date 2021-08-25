@@ -14,10 +14,10 @@ class Book extends Component {
     }
 
     render() {
-        const { book, id } = this.props
+        const { book } = this.props
         return (
-            <li key={id} id={id}>
-            <div className="book">
+            <li key={book.id}>
+            <div key={book.id} id={book.id} className="book">
                 <div className="book-top">
                     {book.imageLinks !== undefined && (
                     <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}>
