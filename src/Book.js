@@ -8,7 +8,7 @@ class Book extends Component {
 
     handleSelect = (e) => {
         e.preventDefault();
-        const newShelf = e.target.value;
+        // const newShelf = e.target.value;
         // update book's shelf using method updateBook
         this.props.update(this.props.book, e.target.value)
     }
@@ -16,12 +16,11 @@ class Book extends Component {
     render() {
         const { book } = this.props
         return (
-            <li key={book.id}>
             <div key={book.id} id={book.id} className="book">
                 <div className="book-top">
                     {book.imageLinks !== undefined && (
-                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}>
-                    </div>
+                        <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}>
+                        </div>
                     )}
                     <div className="book-shelf-changer">
                         <select value={book.shelf} onChange={this.handleSelect}>
@@ -33,14 +32,13 @@ class Book extends Component {
                         </select>
                     </div>
                 </div>
-                {book.title !== undefined &&  (
-                <div className="book-title">{book.title}</div>
+                {book.title !== undefined && (
+                    <div className="book-title">{book.title}</div>
                 )}
                 {book.authors !== undefined && (
-                <div className="book-authors">{book.authors}</div>
+                    <div className="book-authors">{book.authors && book.authors.join(', ')}</div>
                 )}
             </div>
-            </li>
         )
     }
 }

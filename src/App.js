@@ -3,7 +3,7 @@ import * as BooksAPI from './BooksAPI'
 import './App.css'
 import Bookshelves from './Bookshelves'
 import Searchbooks from './Searchbooks'
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { Route } from "react-router-dom";
 
 class BooksApp extends React.Component {
   state = {
@@ -14,84 +14,82 @@ class BooksApp extends React.Component {
      * pages, as well as provide a good URL they can bookmark and share.
      */
     books: [],
-    results:[],
- };
+    results: [],
+  };
 
- searchBooks = (query) => {
-  if (query !== undefined && query.length === 0) {
-    this.resetSearch();
-  } else {
-   BooksAPI.search(query).then((results) => {
-     if (results !== undefined && results.length > 0) {
-      const filteredList = results.map((book)=>{
-        if (this.state.books !== undefined && this.state.books.length > 0) {
-          const bookExist = this.state.books.find((existingBook) => {
-            return existingBook.id === book.id 
-          });
-          if (bookExist !== undefined) {
-            return bookExist;
-          } else {
-            book.shelf = 'none';
-            return book;
+  searchBooks = (query) => {
+    if (query !== undefined && query.length === 0) {
+      this.resetSearch();
+    } else {
+      BooksAPI.search(query).then((results) => {
+        if (results !== undefined && results.length > 0) {
+          const filteredList = results.map((book) => {
+            if (this.state.books !== undefined && this.state.books.length > 0) {
+              const bookExist = this.state.books.find((existingBook) => {
+                return existingBook.id === book.id
+              });
+              if (bookExist !== undefined) {
+                return bookExist;
+              } else {
+                book.shelf = 'none';
+                return book;
+              }
+            }
+          })
+          if (filteredList !== undefined && filteredList.length > 0) {
+            this.setState({
+              results: filteredList
+            })
           }
+        } else {
+          console.log("Oops, no result is found!");
         }
-      })
-      if (filteredList !== undefined && filteredList.length > 0) {
-      this.setState({
-         results: filteredList
-       })
-      }
-     } else {
-      console.log("Oops, no result is found!");
-     }
-    
-   })
-  }
- };
 
-  getAll = () => { 
-    BooksAPI.getAll().then((allbooks) => { 
-      this.setState(()=> ({books:allbooks}))
-     });
+      })
+    }
+  };
+
+  async getAll() {
+    const books = await BooksAPI.getAll();
+    this.setState({
+      books: books
+    })
   }
 
   componentDidMount() {
     this.getAll();
-    console.log(this.state.books);
-  };
+  }
 
-  updateBook = (book,shelf) => {
+  updateBook = (book, shelf) => {
     console.log("update book with shelf:" + shelf);
-    BooksAPI.update(book,shelf).then((results) => {
-           // update the books on the shelves
-           this.getAll();
-           // also need to update the search book results
-           this.state.results.map(result=>{
-              if (result.id === book.id) {
-                result.shelf = shelf;
-              }
-           })
-           
-          });
+    BooksAPI.update(book, shelf).then((results) => {
+      // update the books on the shelves
+      this.getAll();
+      // also need to update the search book results
+      this.state.results.map(result => {
+        if (result.id === book.id) {
+          result.shelf = shelf;
+        }
+      })
+
+    });
   };
 
   resetSearch = () => {
-    this.setState( {
-      results:[]
+    this.setState({
+      results: []
     })
   }
-    
+
   render() {
     return (
       <div className="app">
-        <Route exact path='/' render={()=>(
-          <Bookshelves allbooks={this.state.books} update={this.updateBook}/>
-        )}/>
-        <Route path='/search' render={({ history })=>(
-          <Searchbooks results={this.state.results} searchBooks={this.searchBooks} update={
-            this.updateBook
-          }/>
-        )}/>
+        <Route exact path='/'>
+          <Bookshelves allbooks={this.state.books} update={this.updateBook} />
+        </Route>
+        <Route exact path='/search'>
+          <Searchbooks results={this.state.results} update={this.updateBook} searchBooks={this.searchBooks} />
+        </Route>
       </div>
     )
   }

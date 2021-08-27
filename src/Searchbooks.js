@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import * as BooksAPI from './BooksAPI'
 import Book from './Book'
 import { Link } from 'react-router-dom'
  /*
@@ -23,14 +22,8 @@ class Searchbooks extends Component {
         query:''
     }
    
-    updateQuery = (query) => {
-       
-        // search the api by the latest
-        //if (query.length > 0 && query !== undefined) {
-            console.log("we search!")
-            console.log("what is the query?" + query)
-            this.props.searchBooks(query)
-        //}
+    updateQuery = (query) => { 
+        this.props.searchBooks(query)
         this.setState(()=> ({
             query:query
          }))
@@ -38,7 +31,7 @@ class Searchbooks extends Component {
 
     render() {
         const { query } = this.state
-        const { results, searchBooks, update} = this.props
+        const { results, update } = this.props
        
         return (
             <div className="search-books">
@@ -57,7 +50,9 @@ class Searchbooks extends Component {
                 <ol className="books-grid">
                 { results !== undefined && results.length > 0 &&
                     this.props.results.map((result) => (
-                        <Book book={result} update={this.props.update}/>
+                        <li key={result.id}>
+                        <Book book={result} update={update}/>
+                        </li> 
                     ))
                 } 
                 </ol>
