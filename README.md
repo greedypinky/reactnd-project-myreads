@@ -24,7 +24,7 @@ The books on the main page should have the same shelf selection state.
 * install all project dependencies with `npm install`
 * start the development server with `npm start`.
 
- The app will be started at localhost:3001
+ The app will be started at `localhost:3001`
 
 
 
