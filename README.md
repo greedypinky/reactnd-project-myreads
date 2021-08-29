@@ -1,6 +1,8 @@
-# MyReads Project descriptions
+# Udacity React Nanodegree Program: MyReads Project 
+
+## Project Descriptions
  This is a bookshelf app implemented by React that allows user to select and categorize books.
- BooksAPI.js being used to save and update the book state is provided by `Udacity`.
+ Backend API functionalities from BooksAPI.js provided by `Udacity` to get all books from shelves, search books by search query, update the book state.
 
 ## Main page
 
